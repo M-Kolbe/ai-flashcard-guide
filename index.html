@@ -225,8 +225,8 @@
 
         .workflow-card:hover {
             border-color: rgba(99, 102, 241, 0.5);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.2), 0 0 24px rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.2), 0 0 20px rgba(99, 102, 241, 0.3);
         }
         
         .workflow-card:hover::before {
@@ -254,6 +254,24 @@
             color: #1e293b;
             font-weight: 700;
             letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .workflow-arrow {
+            font-size: 0.8em;
+            transition: transform 0.3s;
+            opacity: 0;
+        }
+        
+        .workflow-card.selected .workflow-arrow {
+            opacity: 1;
+        }
+        
+        .workflow-card.selected .workflow-arrow {
+            transform: rotate(90deg);
         }
 
         .workflow-card p {
@@ -305,8 +323,8 @@
         
         .step:hover {
             background: #fefefe;
-            transform: translateX(6px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateX(3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
         }
 
         .step-header {
@@ -443,6 +461,19 @@
             color: white;
             border-color: transparent;
             box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+            position: relative;
+        }
+        
+        .tab-button::after {
+            content: '▼';
+            margin-left: 8px;
+            font-size: 0.7em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tab-button.active::after {
+            opacity: 1;
         }
 
         .tab-content {
@@ -453,14 +484,36 @@
             display: block;
         }
 
-        /* Code Block */
+        /* Code Block - COMPACT with SCROLL */
         .code-block {
             background: #f8fafc;
             border: 2px solid #e2e8f0;
             border-radius: 16px;
             padding: 24px;
+            padding-top: 60px;
             position: relative;
             margin-bottom: 20px;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+        
+        /* Custom Scrollbar */
+        .code-block::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--primary-purple));
+            border-radius: 10px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
         }
 
         .code-block pre {
@@ -488,6 +541,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 0.9em;
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            z-index: 10;
         }
 
         .copy-button:hover {
@@ -500,6 +554,39 @@
         }
 
         /* Tips Grid */
+        /* Tips Section - COLLAPSIBLE */
+        .section.tips-section {
+            cursor: default;
+        }
+        
+        .section-header-clickable {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-toggle {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+        
+        .section.collapsed .section-toggle {
+            transform: rotate(-90deg);
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        
+        .collapsible-content.active {
+            max-height: 10000px;
+            transition: max-height 0.8s ease-in;
+        }
+        
         .tips-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -515,6 +602,11 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .tip-card.expanded {
+            border-color: var(--primary);
         }
         
         .tip-card::before {
@@ -530,9 +622,9 @@
         }
 
         .tip-card:hover {
-            transform: translateY(-8px) scale(1.03);
+            transform: translateY(-4px);
             border-color: rgba(99, 102, 241, 0.4);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.2), 0 0 24px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.2), 0 0 20px rgba(99, 102, 241, 0.3);
         }
         
         .tip-card:hover::before {
@@ -543,6 +635,11 @@
             font-size: 3em;
             margin-bottom: 16px;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            transition: transform 0.3s;
+        }
+        
+        .tip-card.expanded .tip-icon {
+            transform: scale(1.2);
         }
 
         .tip-card h4 {
@@ -560,6 +657,21 @@
             margin: 0;
             font-weight: 500;
         }
+        
+        .tip-detail {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 2px solid #e2e8f0;
+            display: none;
+            font-size: 0.95em;
+            color: #64748b;
+            line-height: 1.8;
+        }
+        
+        .tip-card.expanded .tip-detail {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
 
         /* FAQ */
         .faq-item {
@@ -575,7 +687,7 @@
         .faq-item:hover {
             border-color: var(--primary);
             background: #fefefe;
-            transform: translateX(4px);
+            transform: translateX(2px);
             box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
         }
 
@@ -602,8 +714,10 @@
         }
 
         .faq-toggle {
-            font-size: 1.2em;
+            font-size: 1em;
             transition: transform 0.3s;
+            color: var(--primary);
+            font-weight: 700;
         }
 
         .faq-item.open .faq-toggle {
@@ -696,9 +810,43 @@
             }
         }
 
-        /* Smooth Scroll */
+        /* Smooth Scroll - NO JANK - ULTIMATE FIX */
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Prevent layout shift */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Hardware acceleration for smooth animations */
+        .section, .workflow-card, .step, .tip-card, .faq-item {
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        
+        /* Remove transforms on scroll */
+        @media (prefers-reduced-motion: no-preference) {
+            .workflow-card:hover,
+            .tip-card:hover,
+            .step:hover,
+            .faq-item:hover {
+                will-change: transform;
+            }
         }
     </style>
 </head>
@@ -748,7 +896,7 @@
             <div class="workflow-choice">
                 <div class="workflow-card" onclick="selectWorkflow('classic')">
                     <div class="workflow-icon">📚</div>
-                    <h3>Classic</h3>
+                    <h3>Classic <span class="workflow-arrow">▶</span></h3>
                     <p>Photos → NotebookLM → CSV → Claude → HTML</p>
                     <p style="margin-top: 12px; font-size: 0.9em;">✅ Best OCR Quality<br>✅ You control the cards</p>
                     <span class="workflow-badge">Recommended for complex content</span>
@@ -756,7 +904,7 @@
 
                 <div class="workflow-card" onclick="selectWorkflow('direct')">
                     <div class="workflow-icon">⚡</div>
-                    <h3>Direct</h3>
+                    <h3>Direct <span class="workflow-arrow">▶</span></h3>
                     <p>Photos → Claude → HTML</p>
                     <p style="margin-top: 12px; font-size: 0.9em;">✅ Faster (only 1 tool)<br>✅ Fewer steps</p>
                     <span class="workflow-badge">Perfect for quick learning</span>
@@ -767,8 +915,15 @@
         <!-- Classic Workflow -->
         <div class="workflow-content" id="classic-workflow">
             <div class="section">
-                <h2 class="section-title">📚 Classic Workflow</h2>
-                <p class="section-subtitle">2 tools, best control</p>
+                <div class="section-header-clickable" onclick="toggleWorkflowSection(this)" style="cursor: pointer;">
+                    <div>
+                        <h2 class="section-title">📚 Classic Workflow</h2>
+                        <p class="section-subtitle">2 tools, best control</p>
+                    </div>
+                    <span class="section-toggle" style="font-size: 2em;">▼</span>
+                </div>
+
+                <div class="collapsible-content active">
 
                 <!-- Step 1: NotebookLM -->
                 <div class="step">
@@ -1059,14 +1214,22 @@ Exam on: [DATE] (optional)</pre>
                         <p>💾 <strong>Tip:</strong> Save the HTML file in Dropbox/Google Drive for automatic sync across all devices!</p>
                     </div>
                 </div>
-            </div>
-        </div>
+                </div>  <!-- Close collapsible-content -->
+            </div>  <!-- Close section -->
+        </div>  <!-- Close workflow-content -->
 
         <!-- Direct Workflow -->
         <div class="workflow-content" id="direct-workflow">
             <div class="section">
-                <h2 class="section-title">⚡ Direct Workflow</h2>
-                <p class="section-subtitle">1 tool, maximum speed</p>
+                <div class="section-header-clickable" onclick="toggleWorkflowSection(this)" style="cursor: pointer;">
+                    <div>
+                        <h2 class="section-title">⚡ Direct Workflow</h2>
+                        <p class="section-subtitle">1 tool, maximum speed</p>
+                    </div>
+                    <span class="section-toggle" style="font-size: 2em;">▼</span>
+                </div>
+
+                <div class="collapsible-content active">
 
                 <div class="step">
                     <div class="step-header">
@@ -1088,7 +1251,7 @@ Exam on: [DATE] (optional)</pre>
                         <h3>🤖 Claude - Everything in One Step</h3>
                     </div>
 
-                    <p><strong>1. Go to <a href="https://claude.ai/" target="_blank">Claude.ai</a></strong></p>
+                    <p><strong>1. Go to <a href="https://claude.ai/" target="_blank">Claude.ai</a></strong> (free account is enough)</p>
                     
                     <p><strong>2. Upload your files</strong> (photos, PDFs, Word, PowerPoint - everything works!)</p>
                     
@@ -1152,57 +1315,113 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
                         <p>⚠️ <strong>Note:</strong> For very complex or illegible texts, NotebookLM delivers better OCR results.</p>
                     </div>
                 </div>
+                </div>  <!-- Close collapsible-content -->
+            </div>  <!-- Close section -->
+        </div>  <!-- Close workflow-content -->
+
+        <!-- Tips Section - COLLAPSIBLE (default closed) -->
+        <div class="section tips-section collapsed">
+            <div class="section-header-clickable" onclick="toggleSection(this)">
+                <div>
+                    <h2 class="section-title">💡 Pro Tips</h2>
+                    <p class="section-subtitle">Get the most out of it</p>
+                </div>
+                <span class="section-toggle">▶</span>
             </div>
-        </div>
 
-        <!-- Tips Section -->
-        <div class="section">
-            <h2 class="section-title">💡 Pro Tips</h2>
-            <p class="section-subtitle">Get the most out of it</p>
-
-            <div class="tips-grid">
-                <div class="tip-card">
+            <div class="collapsible-content">
+                <div class="tips-grid">
+                <div class="tip-card" onclick="toggleTip(this)">
                     <div class="tip-icon">📸</div>
                     <h4>Good Photos = Good Cards</h4>
                     <p>Pay attention to good lighting, sharp images, and clear pages!</p>
+                    <div class="tip-detail">
+                        <strong>Pro Tips:</strong><br>
+                        • Use daylight (no shadows)<br>
+                        • Hold camera straight (not tilted)<br>
+                        • Text must be readable (min. 12pt)<br>
+                        • Take photos individually (not multiple pages at once)
+                    </div>
                 </div>
-                <div class="tip-card">
+                <div class="tip-card" onclick="toggleTip(this)">
                     <div class="tip-icon">🔒</div>
                     <h4>Respect Privacy</h4>
                     <p>No personal data in photos. Upload only study material!</p>
+                    <div class="tip-detail">
+                        <strong>Why important?</strong><br>
+                        • NotebookLM & Claude store uploads temporarily<br>
+                        • No names, addresses, dates of birth in photos<br>
+                        • For school notes: redact personal info
+                    </div>
                 </div>
-                <div class="tip-card">
+                <div class="tip-card" onclick="toggleTip(this)">
                     <div class="tip-icon">🎯</div>
                     <h4>Be Specific</h4>
                     <p>Customize the prompt: mention subject, exam date, special requirements.</p>
+                    <div class="tip-detail">
+                        <strong>Example:</strong><br>
+                        "Subject: Biology (Genetics)<br>
+                        Exam on: March 15, 2026<br>
+                        Focus: Mendelian inheritance<br>
+                        Difficulty: Medium"
+                    </div>
                 </div>
-                <div class="tip-card">
+                <div class="tip-card" onclick="toggleTip(this)">
                     <div class="tip-icon">🔄</div>
                     <h4>Improve Iteratively</h4>
                     <p>Not perfect? Tell Claude what to change: "Make text bigger", "Add more cards"</p>
+                    <div class="tip-detail">
+                        <strong>Common adjustments:</strong><br>
+                        • "Increase font size to 1.5rem"<br>
+                        • "Create 10 more cards about [topic]"<br>
+                        • "Make answers shorter"<br>
+                        • "Add more examples"
+                    </div>
                 </div>
-                <div class="tip-card">
+                <div class="tip-card" onclick="toggleTip(this)">
                     <div class="tip-icon">👥</div>
                     <h4>Share & Learn</h4>
                     <p>Use the share button in the app or send the HTML file via WhatsApp/email!</p>
+                    <div class="tip-detail">
+                        <strong>Sharing options:</strong><br>
+                        • WhatsApp/Telegram (send file directly)<br>
+                        • Email (as attachment)<br>
+                        • Google Drive/Dropbox (share link)<br>
+                        • USB stick (for offline use)
+                    </div>
                 </div>
-                <div class="tip-card">
+                <div class="tip-card" onclick="toggleTip(this)">
                     <div class="tip-icon">⏰</div>
                     <h4>Repeat Regularly</h4>
                     <p>Spaced repetition works best with daily use (10-15 min).</p>
+                    <div class="tip-detail">
+                        <strong>Learning schedule:</strong><br>
+                        • Day 1: Go through all cards<br>
+                        • Day 2-7: Only wrong cards<br>
+                        • Day 14: Review all again<br>
+                        • Before exam: Complete review
+                    </div>
                 </div>
+            </div>
             </div>
         </div>
 
-        <!-- FAQ Section -->
-        <div class="section">
-            <h2 class="section-title">❓ FAQ</h2>
-            <p class="section-subtitle">Troubleshooting & Help</p>
+        <!-- FAQ Section - COLLAPSIBLE (default closed) -->
+        <div class="section collapsed">
+            <div class="section-header-clickable" onclick="toggleSection(this)">
+                <div>
+                    <h2 class="section-title">❓ FAQ</h2>
+                    <p class="section-subtitle">Troubleshooting & Help</p>
+                </div>
+                <span class="section-toggle">▶</span>
+            </div>
+
+            <div class="collapsible-content">
 
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Which workflow should I choose?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     <strong>Classic:</strong> If your photos contain complex formulas, diagrams, or illegible text. NotebookLM has better OCR.<br><br>
@@ -1213,7 +1432,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Does it work without a Google account?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Yes! Just use the <strong>Direct Workflow</strong> with only Claude. You don't need a Google account then.
@@ -1223,7 +1442,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>The generated cards aren't good. What to do?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Just keep chatting with Claude: "Make the questions shorter", "Add more examples", "Create 10 more cards about [topic]". Claude adapts the app!
@@ -1233,7 +1452,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Can I add my own cards?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Yes! Open the HTML file with a text editor (e.g. Notepad), search for the <code>flashcardsData</code> array and add new cards in the same format.
@@ -1243,7 +1462,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>My progress is gone after browser restart?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     This only happens if you clear browser cache. Use the <strong>Power Prompt</strong> – it has an export/backup function!
@@ -1253,7 +1472,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Does it work on mobile?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Absolutely! All prompts are optimized for responsive design. The app works perfectly on mobile, tablet, and desktop.
@@ -1263,7 +1482,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Can I share the app with friends?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Yes! The app has a built-in share button (📤). On mobile, WhatsApp/Email opens directly. Alternative: Send the HTML file via WhatsApp, email, or cloud storage. Everyone can open it directly in the browser – no installation needed!
@@ -1273,7 +1492,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Can I also upload PDFs or Word documents?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Absolutely! Claude processes photos, PDFs, Word documents, Excel, PowerPoint, and more. You don't have to photograph everything – just upload and done!
@@ -1283,7 +1502,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>What is Spaced Repetition?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     A proven learning principle: Difficult cards (answered incorrectly) are repeated more often than easy ones. This way you automatically focus on what you still need to learn. Studies show 200% better long-term retention!
@@ -1293,7 +1512,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Can I add new cards to the finished app?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Yes! The app has a <strong>"Load CSV"</strong> button. You can upload a new CSV file anytime and the cards will be replaced immediately. Perfect for: different topics, updates, or when you want to add more cards. That's the big advantage: <strong>Create app once, update with new cards anytime!</strong>
@@ -1303,7 +1522,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             <div class="faq-item" onclick="toggleFaq(this)">
                 <div class="faq-question">
                     <span>Are there keyboard shortcuts?</span>
-                    <span class="faq-toggle">▼</span>
+                    <span class="faq-toggle">▶</span>
                 </div>
                 <div class="faq-answer">
                     Yes! The Power app supports:<br>
@@ -1312,6 +1531,8 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
                     • <strong>← or A:</strong> Mark wrong<br>
                     • <strong>S:</strong> Shuffle cards<br>
                     A keyboard hint is displayed below the buttons.
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -1357,7 +1578,7 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
         window.addEventListener('load', function() {
             try {
                 const qr = qrcode(0, 'M');
-                const url = 'https://m-kolbe.github.io/ai-flashcard-guide/';
+                const url = window.location.href;
                 qr.addData(url);
                 qr.make();
                 
@@ -1382,36 +1603,59 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
             }
         });
         
-        // Workflow Selection
+        // Workflow Selection (with TOGGLE)
         function selectWorkflow(workflow) {
+            const targetWorkflow = workflow === 'classic' ? 
+                document.getElementById('classic-workflow') : 
+                document.getElementById('direct-workflow');
+            const clickedCard = event.target.closest('.workflow-card');
+            
+            // Check if already selected - TOGGLE OFF
+            if (clickedCard.classList.contains('selected')) {
+                document.querySelectorAll('.workflow-content').forEach(el => {
+                    el.classList.remove('active');
+                });
+                document.querySelectorAll('.workflow-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                return;
+            }
+            
+            // Otherwise TOGGLE ON
             document.querySelectorAll('.workflow-content').forEach(el => {
                 el.classList.remove('active');
             });
 
-            if (workflow === 'classic') {
-                document.getElementById('classic-workflow').classList.add('active');
-            } else {
-                document.getElementById('direct-workflow').classList.add('active');
-            }
+            targetWorkflow.classList.add('active');
 
             document.querySelectorAll('.workflow-card').forEach(card => {
                 card.classList.remove('selected');
             });
-            event.target.closest('.workflow-card').classList.add('selected');
+            clickedCard.classList.add('selected');
 
+            // Scroll to workflow
             setTimeout(() => {
-                document.getElementById('classic-workflow').scrollIntoView({ 
+                targetWorkflow.scrollIntoView({ 
                     behavior: 'smooth', 
                     block: 'start' 
                 });
             }, 100);
         }
 
-        // Tab Switching
+        // Tab Switching - WITH TOGGLE
         function switchTab(index) {
             const tabs = document.querySelectorAll('.tab-button');
             const contents = document.querySelectorAll('.tab-content');
-
+            const clickedTab = tabs[index];
+            
+            // Check if already active - TOGGLE OFF
+            if (clickedTab.classList.contains('active')) {
+                clickedTab.classList.remove('active');
+                contents[index].classList.remove('active');
+                return;
+            }
+            
+            // Otherwise switch tabs
             tabs.forEach((tab, i) => {
                 if (i === index) {
                     tab.classList.add('active');
@@ -1445,6 +1689,29 @@ NOTE: This is the direct way - you create cards AND app in one step!</pre>
         // FAQ Toggle
         function toggleFaq(element) {
             element.classList.toggle('open');
+        }
+        
+        // Tip Card Toggle
+        function toggleTip(element) {
+            element.classList.toggle('expanded');
+        }
+        
+        // Section Toggle (for Tips & FAQ)
+        function toggleSection(headerElement) {
+            const section = headerElement.closest('.section');
+            const content = section.querySelector('.collapsible-content');
+            
+            section.classList.toggle('collapsed');
+            content.classList.toggle('active');
+        }
+        
+        // Workflow Section Toggle (for Classic/Direct workflow details)
+        function toggleWorkflowSection(headerElement) {
+            const content = headerElement.nextElementSibling;
+            const section = headerElement.closest('.section');
+            
+            section.classList.toggle('collapsed');
+            content.classList.toggle('active');
         }
 
         // Smooth Scroll
